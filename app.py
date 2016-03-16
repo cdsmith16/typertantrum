@@ -11,13 +11,6 @@ app.config.update(
     DEBUG = False,
 )
 
-"""Code retrieved from Aashay sample.  Requests to & fro Clever API"""
-CLEVER_APP_ID = 'df335c6ac80a8b80a343'
-CLEVER_APP_SECRET = '0965310be8fccc31d511e9b781c153712d6acbb7'
-
-REDIRECT_URI = 'https://typertantrum.herokuapp.com/clever_authorized'
-CLEVER_OAUTH_URL = 'https://clever.com/oauth/tokens'
-CLEVER_API_BASE = 'https://api.clever.com'
 
 """
 # Our OAuth 2.0 redirect URI location corresponds to what we've set above as our REDIRECT_URI
@@ -188,5 +181,11 @@ def logout():
 
 # launch
 if __name__ == "__main__":
+    CLEVER_APP_ID = 'df335c6ac80a8b80a343'
+    CLEVER_APP_SECRET = '0965310be8fccc31d511e9b781c153712d6acbb7'
+
+    REDIRECT_URI = 'https://typertantrum.herokuapp.com/clever_authorized'
+    CLEVER_OAUTH_URL = 'https://clever.com/oauth/tokens'
+    CLEVER_API_BASE = 'https://api.clever.com'
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port)
