@@ -27,7 +27,7 @@
           {% block navbar_right %}
           <ul class="nav navbar-nav pull-right">
             {% if not session.logged_in %}
-              <li><a href="/clever_login">Login or Signup</a></li>
+              <li><a href="/clever_login" alt="Log in with Clever">Login or Signup</a><img src="/static/assets/clever-medium.png" /></li>
             {% else %}
               <li><a href="/logout">Logout</a></li>
             {% endif %}
