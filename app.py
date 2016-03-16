@@ -86,7 +86,6 @@ def oauth():
 @app.route("/oauth", methods=['GET'])
 #@oauth.authorize_handler
 def oauth():
-    print request.args.get('code')
     code = request.args.get('code')
     scope = request.args.get('scope')
 
@@ -107,6 +106,9 @@ def oauth():
             base64.b64encode(CLIENT_APP_ID + ':' + CLIENT_APP_SECRET)),
         'Content-Type': 'application/json',
     }
+
+    print payload
+    print headers
 
     response = requests.post(CLEVER_OAUTH_URL, data=json.dumps(payload), headers=headers).json()
     token = response['access_token']
