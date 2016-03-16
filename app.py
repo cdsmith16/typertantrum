@@ -2,7 +2,7 @@ import os
 import base64
 import json
 import requests
-import urllib
+import urllib2
 from flask import Flask, render_template, send_from_directory, request
 
 # initialization
@@ -101,11 +101,10 @@ def oauth():
         'redirect_uri': REDIRECT_URI
     }
 
-    print payload
-
+    #print payload
+    base64string = base64.encodestring('%s:%s' % (CLIENT_APP_ID, CLIENT_APP_SECRET)).replace('\n', '')
     headers = {
-        'Authorization': 'Basic {base64string}'.format(base64string =
-            base64.b64encode(CLIENT_APP_ID + ':' + CLIENT_APP_SECRET)),
+        'Authorization': ('Basic %s' % (base64string)),
         'Content-Type': 'application/json',
     }
 
@@ -115,7 +114,7 @@ def oauth():
     token = response['access_token']
 
     bearer_headers = {
-        'Authorization': 'Bearer {token}'.format(token=token)
+        'Authorization': ('Bearer %s' % (token))
     }
 
     # Don't forget to handle 4xx and 5xx errors!
