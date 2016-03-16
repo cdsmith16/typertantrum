@@ -135,8 +135,7 @@ def pop_login_session():
 
 @app.route("/clever_login")
 def clever_login():
-""" lets boogie
-    <a href="https://clever.com/oauth/authorize?response_type=code&client_id=df335c6ac80a8b80a343&redirect_uri=https%3A%2F%2Ftypertantrum.herokuapp.com%2Fclever_authorized" ></a>"""
+#<a href="https://clever.com/oauth/authorize?response_type=code&client_id=df335c6ac80a8b80a343&redirect_uri=https%3A%2F%2Ftypertantrum.herokuapp.com%2Fclever_authorized" ></a>
     return clever.authorize(callback=url_for('clever_authorized',
         next=request.args.get('next'), _external=True))
 
