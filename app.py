@@ -83,15 +83,15 @@ def oauth():
         redirect('/app')
 """
 
-@app.route("/oauth")
+@app.route("/oauth", methods=['GET'])
 #@oauth.authorize_handler
-def oauth(resp):
-    print resp
-    code = request.query.code
-    scope = request.query.scope
+def oauth():
+    print request.args
+    code = request.args.get('code')
+    scope = request.args.get('scope')
 
     #Verify 'state' Nonce value matches; just 'foo' for demo
-    state = request.query.state
+    state = request.args.get('state')
     if(not state == 'foo'):
         print 'Aborting; request from unidentified sender'
         return
@@ -156,7 +156,6 @@ def page_not_found(e):
 
 @app.route("/")
 def index():
-    print 'is this printing shit working?'
     return render_template('index.html')
 
 def pop_login_session():
