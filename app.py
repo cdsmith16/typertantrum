@@ -103,6 +103,8 @@ def oauth():
 
     #print payload
     base64string = base64.encodestring('%s:%s' % (CLIENT_APP_ID, CLIENT_APP_SECRET)).replace('\n', '')
+    
+    print base64string
     headers = {
         'Authorization': ('Basic %s' % (base64string)),
         'Content-Type': 'application/json',
