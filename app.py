@@ -3,7 +3,7 @@ import base64
 import json
 import requests
 import urllib
-from flask import Flask, render_template, send_from_directory
+from flask import Flask, render_template, send_from_directory, request
 
 # initialization
 app = Flask(__name__)
