@@ -102,6 +102,8 @@ def oauth():
     }
 
     #print payload
+    print CLIENT_APP_ID
+    print CLIENT_APP_SECRET
     base64string = base64.encodestring('%s:%s' % (CLIENT_APP_ID, CLIENT_APP_SECRET)).replace('\n', '')
     
     print base64string
