@@ -86,7 +86,7 @@ def oauth():
 @app.route("/oauth", methods=['GET'])
 #@oauth.authorize_handler
 def oauth():
-    print request.args
+    print request.args.get('code')
     code = request.args.get('code')
     scope = request.args.get('scope')
 
@@ -152,7 +152,7 @@ def page_not_found(e):
 
 @app.errorhandler(500)
 def page_not_found(e):
-    return render_template('404.html'), 500
+    return render_template('500.html'), 500
 
 @app.route("/")
 def index():
