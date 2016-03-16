@@ -11,6 +11,13 @@ app.config.update(
     DEBUG = False,
 )
 
+CLEVER_APP_ID = 'df335c6ac80a8b80a343'
+CLEVER_APP_SECRET = '0965310be8fccc31d511e9b781c153712d6acbb7'
+    
+#for convenience, keeping necessary constants here
+REDIRECT_URI = 'https://typertantrum.herokuapp.com/clever_authorized'
+CLEVER_OAUTH_URL = 'https://clever.com/oauth/tokens'
+CLEVER_API_BASE = 'https://api.clever.com'
 
 """
 # Our OAuth 2.0 redirect URI location corresponds to what we've set above as our REDIRECT_URI
@@ -79,14 +86,6 @@ def oauth():
 @app.route("/oauth", methods=['GET'])
 #@oauth.authorize_handler
 def oauth():
-    CLEVER_APP_ID = 'df335c6ac80a8b80a343'
-    CLEVER_APP_SECRET = '0965310be8fccc31d511e9b781c153712d6acbb7'
-    
-    #for convenience, keeping necessary constants here
-    REDIRECT_URI = 'https://typertantrum.herokuapp.com/clever_authorized'
-    CLEVER_OAUTH_URL = 'https://clever.com/oauth/tokens'
-    CLEVER_API_BASE = 'https://api.clever.com'
-
     code = request.args.get('code')
     scope = request.args.get('scope')
 
@@ -104,9 +103,9 @@ def oauth():
 
     print payload
     print 'okay that part worked...'
-    print CLIENT_APP_ID
-    print CLIENT_APP_SECRET
-    base64string = base64.encodestring('%s:%s' % (CLIENT_APP_ID, CLIENT_APP_SECRET)).replace('\n', '')
+    print CLEVER_APP_ID
+    print CLEVER_APP_SECRET
+    base64string = base64.encodestring('%s:%s' % (CLEVER_APP_ID, CLEVER_APP_SECRET)).replace('\n', '')
     
     print base64string
     headers = {
