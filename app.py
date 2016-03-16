@@ -93,7 +93,7 @@ def oauth():
     state = request.args.get('state')
     if(not state == 'foo'):
         print 'Aborting; request from unidentified sender'
-        return
+        #return
 
     payload = {
         'code': code,
@@ -101,13 +101,14 @@ def oauth():
         'redirect_uri': REDIRECT_URI
     }
 
+    print payload
+
     headers = {
         'Authorization': 'Basic {base64string}'.format(base64string =
             base64.b64encode(CLIENT_APP_ID + ':' + CLIENT_APP_SECRET)),
         'Content-Type': 'application/json',
     }
 
-    print payload
     print headers
 
     response = requests.post(CLEVER_OAUTH_URL, data=json.dumps(payload), headers=headers).json()
