@@ -85,8 +85,8 @@ def oauth():
 
 @app.route("/oauth")
 #@oauth.authorize_handler
-def oauth():
-    print request.query
+def oauth(resp):
+    print resp
     code = request.query.code
     scope = request.query.scope
 
