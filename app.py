@@ -15,7 +15,7 @@ CLEVER_APP_ID = 'df335c6ac80a8b80a343'
 CLEVER_APP_SECRET = '0965310be8fccc31d511e9b781c153712d6acbb7'
     
 #for convenience, keeping necessary constants here
-REDIRECT_URI = 'https://typertantrum.herokuapp.com/clever_authorized'
+REDIRECT_URI = 'https://typertantrum.herokuapp.com/oauth'
 CLEVER_OAUTH_URL = 'https://clever.com/oauth/tokens'
 CLEVER_API_BASE = 'https://api.clever.com'
 
@@ -101,13 +101,8 @@ def oauth():
         'redirect_uri': REDIRECT_URI
     }
 
-    print payload
-    print 'okay that part worked...'
-    print CLEVER_APP_ID
-    print CLEVER_APP_SECRET
     base64string = base64.encodestring('%s:%s' % (CLEVER_APP_ID, CLEVER_APP_SECRET)).replace('\n', '')
     
-    print base64string
     headers = {
         'Authorization': ('Basic %s' % (base64string)),
         'Content-Type': 'application/json',
@@ -116,6 +111,8 @@ def oauth():
     print headers
 
     response = requests.post(CLEVER_OAUTH_URL, data=json.dumps(payload), headers=headers).json()
+    print response
+    
     token = response['access_token']
 
     bearer_headers = {
