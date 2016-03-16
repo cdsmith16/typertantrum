@@ -1,5 +1,6 @@
 Beaker==1.6.4
 bottle==0.12.7
+clever==2.2.0
 dj-database-url==0.4.0
 Django==1.9.2
 Flask==0.10.1
