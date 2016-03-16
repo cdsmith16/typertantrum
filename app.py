@@ -19,6 +19,7 @@ REDIRECT_URI = 'https://typertantrum.herokuapp.com/clever_authorized'
 CLEVER_OAUTH_URL = 'https://clever.com/oauth/tokens'
 CLEVER_API_BASE = 'https://api.clever.com'
 
+"""
 # Our OAuth 2.0 redirect URI location corresponds to what we've set above as our REDIRECT_URI
 # When this route is executed, we will retrieve the "code" parameter and exchange it for a Clever access token.
 # After receiving the access token, we use it with api.clever.com/me to determine its owner,
@@ -60,7 +61,7 @@ def oauth():
 
     return redirect(next_url)
 
-"""
+
     # Only handle student logins for our app (other types include teachers and districts)
     if data['type'] != 'student':
         return template ("You must be a student to log in to this app but you are a {{type}}.", type=data['type'])
@@ -110,20 +111,19 @@ def favicon():
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404
-"""
-Other error handlers
-@app.errorhandler(404)
-def page_not_found(e):
-    return render_template('404.html'), 404
 
-@app.errorhandler(404)
+""" Other error handlers """
+@app.errorhandler(401)
 def page_not_found(e):
-    return render_template('404.html'), 404
+    return render_template('404.html'), 401
 
-@app.errorhandler(404)
+@app.errorhandler(403)
 def page_not_found(e):
-    return render_template('404.html'), 404
-    """
+    return render_template('404.html'), 403
+
+@app.errorhandler(500)
+def page_not_found(e):
+    return render_template('404.html'), 500
 
 @app.route("/")
 def index():
