@@ -83,12 +83,40 @@ def oauth():
         redirect('/app')
 """
 
-"""
-@app.route("/clever_authorized")
-@clever.authorized_handler
-def clever_authorized(resp):
-    print resp
-    code = (resp['code'], '')
+@app.route("/oauth")
+@oauth_handler
+def oauth(resp):
+    code = request.query.code
+
+    #Verify 'state' Nonce value matches; just 'foo' for demo
+    state = request.query.state
+    if(not state == 'foo'):
+        print 'Aborting; request from unidentified sender'
+        return
+
+    payload = {
+        'code': code,
+        'grant_type': 'authorization_code',
+        'redirect_uri': REDIRECT_URI
+    }
+
+    headers = {
+        'Authorization': 'Basic {base64string}'.format(base64string =
+            base64.b64encode(CLIENT_APP_ID + ':' + CLIENT_APP_SECRET)),
+        'Content-Type': 'application/json',
+    }
+
+    response = requests.post(CLEVER_OAUTH_URL, data=json.dumps(payload), headers=headers).json()
+    token = response['access_token']
+
+    bearer_headers = {
+        'Authorization': 'Bearer {token}'.format(token=token)
+    }
+
+    # Don't forget to handle 4xx and 5xx errors!
+    result = requests.get(CLEVER_API_BASE + '/me', headers=bearer_headers).json()
+    data = result['data']
+    print data
 
     next_url = request.args.get('next') or url_for('index')
     if resp is None or 'token' not in resp:
@@ -99,7 +127,6 @@ def clever_authorized(resp):
 
 
     return redirect(next_url)
-"""
 
 
 """Samples from Flask setup guide"""
@@ -135,9 +162,16 @@ def pop_login_session():
 
 @app.route("/clever_login")
 def clever_login():
-#<a href="https://clever.com/oauth/authorize?response_type=code&client_id=df335c6ac80a8b80a343&redirect_uri=https%3A%2F%2Ftypertantrum.herokuapp.com%2Fclever_authorized" ></a>
-    return clever.authorize(callback=url_for('clever_authorized',
-        next=request.args.get('next'), _external=True))
+    auth_payload = {
+        'response_type': 'code',
+        'client_id': CLEVER_APP_ID,
+        'redirect_uri': REDIRECT_URI
+    }
+    #make request to clever with above params, in case one button login not plausible
+    #pass bearer token and response to /oauth
+    """return clever.authorize(callback=url_for('oauth',
+        next=request.args.get('next'), _external=True))"""
+    return True
 
 @app.route("/logout")
 def logout():
