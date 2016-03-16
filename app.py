@@ -82,6 +82,7 @@ def oauth():
         redirect('/app')
 """
 
+"""
 @app.route("/clever_authorized")
 @clever.authorized_handler
 def clever_authorized(resp):
@@ -97,6 +98,8 @@ def clever_authorized(resp):
 
 
     return redirect(next_url)
+"""
+
 
 """Samples from Flask setup guide"""
 # controllers
