@@ -85,8 +85,10 @@ def oauth():
 
 @app.route("/oauth")
 #@oauth.authorize_handler
-def oauth(resp):
+def oauth():
+    print request.query
     code = request.query.code
+    scope = request.query.scope
 
     #Verify 'state' Nonce value matches; just 'foo' for demo
     state = request.query.state
