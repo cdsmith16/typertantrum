@@ -94,7 +94,8 @@ def oauth():
         'redirect_uri': REDIRECT_URI
     }
 
-    #print payload
+    print payload
+    print 'okay that part worked...'
     print CLIENT_APP_ID
     print CLIENT_APP_SECRET
     base64string = base64.encodestring('%s:%s' % (CLIENT_APP_ID, CLIENT_APP_SECRET)).replace('\n', '')
