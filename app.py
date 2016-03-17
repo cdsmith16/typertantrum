@@ -3,7 +3,7 @@ import base64
 import json
 import requests
 import urllib2
-from flask import Flask, render_template, send_from_directory, request
+from flask import Flask, render_template, send_from_directory, request, url_for
 
 # initialization
 app = Flask(__name__)
@@ -132,8 +132,7 @@ def oauth():
 
     session['logged_in'] = True
     session['clever_token'] = token
-    
-    print 'some shit'
+
     return redirect(next_url)
 
 
