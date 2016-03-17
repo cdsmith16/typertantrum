@@ -116,7 +116,7 @@ def oauth():
     response = requests.post(CLEVER_OAUTH_URL, data=json.dumps(payload), headers=headers).json()
     #print response
     
-    next_url = request.args.get('next') or url_for('index')
+    next_url = url_for('index')
     if response is None or 'access_token' not in response:
         return redirect(next_url)
     token = response['access_token']
