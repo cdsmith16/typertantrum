@@ -73,8 +73,8 @@ def oauth():
     
     #for application types, check if the user is actually a student or not
     session['type'] = result['type']
-    session['id'] = result['id']
-    session['district'] = result['district']
+    #session['id'] = result['id']
+    #session['district'] = result['district']
 
     print session
 
