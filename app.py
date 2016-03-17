@@ -119,6 +119,7 @@ def pop_login_session():
 
 @app.route("/logout")
 def logout():
+    print 'you logged out!'
     pop_login_session()
     return redirect(url_for('index'))
 
