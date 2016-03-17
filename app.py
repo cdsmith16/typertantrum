@@ -27,16 +27,24 @@ def oauth():
     code = request.args.get('code')
     scope = request.args.get('scope')
 
+    """ Getting the same code back twice indicates a server error or someone trying to force their way in
+    with a code they retrieved.  TyperTantrum opts to forbid these users.
     #Verify 'code' isn't a repeat; existence placeholder for now
     if(not code):
         print 'Code is a repeat'
-        #return
+        return render_template(403.html)"""
 
+    """ This block verifies "state" but this parameter is not passed back by the developer auth portal.
     #Verify 'state' Nonce value matches; just 'foo' for demo
     state = request.args.get('state')
     if(not state == 'foo'):
-        print 'Aborting; request from unidentified sender'
-        #return
+        print 'Aborting; request from unidentified sender/no state passed back'
+        return render_template(401.html)"""
+
+    #If the application scope does not include read-student access, deem the user unauthorized.
+    if('read:student' not in scope):
+        print 'Not authorized to read student info'
+        return render_template(401.html)
 
     payload = {
         'code': code,
@@ -66,17 +74,13 @@ def oauth():
     # Don't forget to handle 4xx and 5xx errors!
     result = requests.get(CLEVER_API_BASE + '/me', headers=bearer_headers).json()
 
-    #print result
+    print result
 
     session['logged_in'] = True
     session['clever_token'] = token
     
     #for application types, check if the user is actually a student or not
     session['type'] = result['type']
-    #session['id'] = result['id']
-    #session['district'] = result['district']
-
-    print session
 
     return redirect(next_url)
 
@@ -94,11 +98,11 @@ def page_not_found(e):
 """ Other error handlers """
 @app.errorhandler(401)
 def page_not_found(e):
-    return render_template('404.html'), 401
+    return render_template('401.html'), 401
 
 @app.errorhandler(403)
 def page_not_found(e):
-    return render_template('404.html'), 403
+    return render_template('403.html'), 403
 
 @app.errorhandler(500)
 def page_not_found(e):
