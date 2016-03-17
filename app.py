@@ -110,7 +110,7 @@ def index():
 
 #remember to get rid of old student info is the session ends or a someone logs out
 def pop_login_session():
-    print session
+    print session.logged_in
     session.pop('logged_in', None)
     session.pop('type', None)
     session.pop('clever_token', None)
