@@ -10,6 +10,7 @@ app = Flask(__name__)
 app.config.update(
     DEBUG = False,
 )
+app.secret_key = 'd\xbfrFfl\xf0\x93\x82+'
 
 CLEVER_APP_ID = 'df335c6ac80a8b80a343'
 CLEVER_APP_SECRET = '0965310be8fccc31d511e9b781c153712d6acbb7'
@@ -117,8 +118,7 @@ def oauth():
     #print response
     
     next_url = url_for('index')
-    print next_url
-    if response is None or 'access_token' not in response:
+    if (not response) or ('access_token' not in response):
         return redirect(next_url)
     token = response['access_token']
 
@@ -129,7 +129,7 @@ def oauth():
     # Don't forget to handle 4xx and 5xx errors!
     result = requests.get(CLEVER_API_BASE + '/me', headers=bearer_headers).json()
 
-    #print result
+    print result
 
     session['logged_in'] = True
     session['clever_token'] = token
