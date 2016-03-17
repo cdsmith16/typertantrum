@@ -89,6 +89,11 @@ def oauth():
     code = request.args.get('code')
     scope = request.args.get('scope')
 
+    #Verify 'code' isn't a repeat; existence placeholder for now
+    if(not code):
+        print 'Code is a repeat'
+        #return
+
     #Verify 'state' Nonce value matches; just 'foo' for demo
     state = request.args.get('state')
     if(not state == 'foo'):
@@ -109,30 +114,24 @@ def oauth():
     }
 
     response = requests.post(CLEVER_OAUTH_URL, data=json.dumps(payload), headers=headers).json()
-    print response
-
+    #print response
+    
+    next_url = request.args.get('next') or url_for('index')
+    if response is None or 'access_token' not in resp:
+        return redirect(next_url)
     token = response['access_token']
 
     bearer_headers = {
         'Authorization': ('Bearer %s' % (token))
     }
 
-    print bearer_headers
-
     # Don't forget to handle 4xx and 5xx errors!
     result = requests.get(CLEVER_API_BASE + '/me', headers=bearer_headers).json()
 
-    print result
-    data = result['data']
-    print data
-
-    next_url = request.args.get('next') or url_for('index')
-    if resp is None or 'token' not in resp:
-        return redirect(next_url)
+    #print result
 
     session['logged_in'] = True
-    session['clever_token'] = (resp['access_token'], '')
-
+    session['clever_token'] = token
 
     return redirect(next_url)
 
@@ -167,19 +166,6 @@ def index():
 def pop_login_session():
     session.pop('logged_in', None)
     session.pop('clever_token', None)
-
-@app.route("/clever_login")
-def clever_login():
-    auth_payload = {
-        'response_type': 'code',
-        'client_id': CLEVER_APP_ID,
-        'redirect_uri': REDIRECT_URI
-    }
-    #make request to clever with above params, in case one button login not plausible
-    #pass bearer token and response to /oauth
-    """return clever.authorize(callback=url_for('oauth',
-        next=request.args.get('next'), _external=True))"""
-    return True
 
 @app.route("/logout")
 def logout():
