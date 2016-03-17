@@ -76,6 +76,8 @@ def oauth():
     session['id'] = result['id']
     session['district'] = result['district']
 
+    print session
+
     return redirect(next_url)
 
 
