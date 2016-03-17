@@ -117,7 +117,7 @@ def oauth():
     #print response
     
     next_url = request.args.get('next') or url_for('index')
-    if response is None or 'access_token' not in resp:
+    if response is None or 'access_token' not in response:
         return redirect(next_url)
     token = response['access_token']
 
