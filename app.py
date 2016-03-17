@@ -3,7 +3,7 @@ import base64
 import json
 import requests
 import urllib2
-from flask import Flask, render_template, send_from_directory, request, url_for
+from flask import Flask, render_template, send_from_directory, request, url_for, session
 
 # initialization
 app = Flask(__name__)
@@ -20,69 +20,6 @@ REDIRECT_URI = 'https://typertantrum.herokuapp.com/oauth'
 CLEVER_OAUTH_URL = 'https://clever.com/oauth/tokens'
 CLEVER_API_BASE = 'https://api.clever.com'
 
-"""
-# Our OAuth 2.0 redirect URI location corresponds to what we've set above as our REDIRECT_URI
-# When this route is executed, we will retrieve the "code" parameter and exchange it for a Clever access token.
-# After receiving the access token, we use it with api.clever.com/me to determine its owner,
-# save our session state, and redirect our user to our application.
-@route('/oauth')
-def oauth():
-    code = request.query.code
-
-    payload = {
-        'code': code,
-        'grant_type': 'authorization_code',
-        'redirect_uri': REDIRECT_URI
-    }
-
-    headers = {
-    	'Authorization': 'Basic {base64string}'.format(base64string =
-            base64.b64encode(CLIENT_APP_ID + ':' + CLIENT_APP_SECRET)),
-        'Content-Type': 'application/json',
-    }
-
-    # Don't forget to handle 4xx and 5xx errors!
-    response = requests.post(CLEVER_OAUTH_URL, data=json.dumps(payload), headers=headers).json()
-    token = response['access_token']
-
-    bearer_headers = {
-        'Authorization': 'Bearer {token}'.format(token=token)
-    }
-
-    # Don't forget to handle 4xx and 5xx errors!
-    result = requests.get(CLEVER_API_BASE + '/me', headers=bearer_headers).json()
-    data = result['data']
-    print data
-
-    next_url = request.args.get('next') or url_for('index')
-
-    session['logged_in'] = True
-    session['clever_token'] = token
-
-
-    return redirect(next_url)
-
-
-    # Only handle student logins for our app (other types include teachers and districts)
-    if data['type'] != 'student':
-        return template ("You must be a student to log in to this app but you are a {{type}}.", type=data['type'])
-    else:
-        if 'name' in data: #SIS scope
-            nameObject = data['name']            
-        else:
-            
-            #For student scopes, we'll have to take an extra step to get name data.
-            studentId = data['id']
-            student = requests.get(CLEVER_API_BASE + '/v1.1/students/{studentId}'.format(studentId=studentId), 
-                headers=bearer_headers).json()
-            
-            nameObject = student['data']['name']
-        
-        session = request.environ.get('beaker.session')
-        session['nameObject'] = nameObject
-
-        redirect('/app')
-"""
 
 @app.route("/oauth", methods=['GET'])
 #@oauth.authorize_handler
@@ -129,10 +66,15 @@ def oauth():
     # Don't forget to handle 4xx and 5xx errors!
     result = requests.get(CLEVER_API_BASE + '/me', headers=bearer_headers).json()
 
-    print result
+    #print result
 
     session['logged_in'] = True
     session['clever_token'] = token
+    
+    #for application types, check if the user is actually a student or not
+    session['type'] = result['type']
+    session['id'] = result['id']
+    session['district'] = result['district']
 
     return redirect(next_url)
 
@@ -164,9 +106,13 @@ def page_not_found(e):
 def index():
     return render_template('index.html')
 
+#remember to get rid of old student info is the session ends or a someone logs out
 def pop_login_session():
     session.pop('logged_in', None)
     session.pop('clever_token', None)
+    session.pop('type', None)
+    session.pop('id', None)
+    session.pop('district', None)
 
 @app.route("/logout")
 def logout():
