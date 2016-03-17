@@ -132,7 +132,8 @@ def oauth():
 
     session['logged_in'] = True
     session['clever_token'] = token
-
+    
+    print 'some shit'
     return redirect(next_url)
 
 
