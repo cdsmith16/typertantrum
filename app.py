@@ -8,7 +8,7 @@ from flask import Flask, render_template, send_from_directory, request, url_for,
 # initialization
 app = Flask(__name__)
 app.config.update(
-    DEBUG = False,
+    DEBUG = True,
 )
 app.secret_key = 'd\xbfrFfl\xf0\x93\x82+'
 
