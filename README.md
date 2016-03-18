@@ -20,4 +20,6 @@ Contact author for district admin info/inspection
 
 You can also log into the Demo "district" TyperTown directly here:  https://clever.com/in/demo-typertowne5ea018010000018c
 
-Upon login, clicking on the application link will take you to TyperTantrum
+Upon login, clicking on the application link will take you to TyperTantrum.
+
+Thank you to https://github.com/Clever/clever-oauth-examples/tree/master/python and http://blog.shea.io/lightweight-python-apps-with-flask-twitter-bootstrap-and-heroku/ as demonstrations of Clever and Flask implementations, respectively.
