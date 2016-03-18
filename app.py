@@ -8,7 +8,7 @@ from flask import Flask, render_template, send_from_directory, request, url_for,
 # initialization
 app = Flask(__name__)
 app.config.update(
-    DEBUG = True,
+    DEBUG = False,
 )
 app.secret_key = 'd\xbfrFfl\xf0\x93\x82+'
 
@@ -74,12 +74,37 @@ def oauth():
     # Don't forget to handle 4xx and 5xx errors!
     result = requests.get(CLEVER_API_BASE + '/me', headers=bearer_headers).json()
 
+    """The result for the /me api contains information resembling the following:
+    {  
+    "links":[  
+        {  
+            "uri":"/me",
+            "rel":"self"
+        },
+        {  
+            "uri":"/v1.1/students/56e8c7375a748be67800dd3e",
+            "rel":"canonical"
+        },
+        {  
+            "uri":"/v1.1/districts/56e8c2fe5ea018010000018c",
+            "rel":"district"
+        }
+    ],
+    "data":{  
+        "id":"56e8c7375a748be67800dd3e",
+        "district":"56e8c2fe5ea018010000018c",
+        "type":"student"
+    },
+    "type":"student"
+    }
+    This information will be utilized to flesh out the behavior of your application."""
+    
     print result
 
     session['logged_in'] = True
     session['clever_token'] = token
     
-    #for application types, check if the user is actually a student or not
+    #for live applications, you may want different experiences for different types e.g. non-students
     session['type'] = result['type']
 
     return redirect(next_url)
@@ -114,7 +139,7 @@ def index():
 
 #remember to get rid of old student info is the session ends or a someone logs out
 def pop_login_session():
-    print session['logged_in']
+    #print session['logged_in']
     session.pop('logged_in', None)
     session.pop('type', None)
     session.pop('clever_token', None)
@@ -123,7 +148,7 @@ def pop_login_session():
 
 @app.route("/logout")
 def logout():
-    print 'you logged out!'
+    #print 'you logged out!'
     pop_login_session()
     return redirect(url_for('index'))
 
