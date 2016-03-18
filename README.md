@@ -3,7 +3,7 @@ Example Web Typing Game for Kids
 
 This demo web-typing game demonstrates integration with Clever's Instant Login API.
 
-To verify said integration, head to "http://typertantrum.herokuapp.com" and try logging in with one of the following faux users:
+To verify said integration, head to "https://typertantrum.herokuapp.com" and try logging in with one of the following faux users:
 
 Students:
 A Bitbitter Anderson, 239068
