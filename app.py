@@ -42,7 +42,7 @@ def oauth():
         return render_template(401.html)"""
 
     #If the application scope does not include read-student access, deem the user unauthorized.
-    if('read:student' not in scope):
+    if('read:student' not in scope or 'read:sis' not in scope):
         print 'Not authorized to read student info'
         return render_template('401.html')
 

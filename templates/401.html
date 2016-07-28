@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block title %} - Unauthorized{% endblock %}
 {% block content %}
-  <h1>Your authorization was invalid, or there was miscommunication between your SSO and TyperTantrum.</h1>
+  <h1>Your authorization was invalid - be sure to sign in a student!</h1>
   <p><a href="{{ url_for('index') }}">home</a></p>
 {% endblock %}
