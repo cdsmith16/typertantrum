@@ -105,7 +105,7 @@ def oauth():
     session['clever_token'] = token
     
     #for live applications, you may want different experiences for different types e.g. non-students
-    session['type'] = result['type']
+    session['type'] = '%s %s' % (result['name']['first'],result['name']['last'])
 
     return redirect(next_url)
 
