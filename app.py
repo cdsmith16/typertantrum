@@ -60,7 +60,7 @@ def oauth():
     }
 
     response = requests.post(CLEVER_OAUTH_URL, data=json.dumps(payload), headers=headers).json()
-    #print response
+    print response
     
     next_url = url_for('index')
     if (not response) or ('access_token' not in response):

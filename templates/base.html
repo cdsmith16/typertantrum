@@ -27,7 +27,7 @@
           {% block navbar_right %}
           <ul class="nav navbar-nav pull-right">
             {% if not session.logged_in %}
-              <li><a href="https://clever.com/oauth/authorize/client_id=df335c6ac80a8b80a343&district_id=56e8c2fe5ea018010000018c&redirect_uri=https%3A%2F%2Ftypertantrum.herokuapp.com%2Foauth&state=foo" alt="Log in with Clever"><img src="/static/assets/clever-medium.png" /></a></li>
+              <li><a href="https://clever.com/oauth/authorize?client_id=df335c6ac80a8b80a343&district_id=56e8c2fe5ea018010000018c&redirect_uri=https%3A%2F%2Ftypertantrum.herokuapp.com%2Foauth&response_type=code" alt="Log in with Clever"><img src="/static/assets/clever-medium.png" /></a></li>
             {% else %}
               <li><a href="/logout">Logout</a></li>
             {% endif %}
